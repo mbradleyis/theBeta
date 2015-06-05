@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     open = require("gulp-open"),
     browserify = require('gulp-browserify'),
     concat = require('gulp-concat'),
+    sass = require('gulp-sass'),
     port = process.env.port || 3031;
 
 // browserify and transform JSX
@@ -30,9 +31,9 @@ gulp.task('connect', function() {
   });
 });
 
-// live reload jsx
+// live reload js
 gulp.task('js', function () {
-  gulp.src('./app/dist/**/*.js')
+  gulp.src('./app/dist/js/*.js')
     .pipe(connect.reload());
 });
 
@@ -42,11 +43,30 @@ gulp.task('html', function () {
     .pipe(connect.reload());
 });
 
-// watch files for live reload
+// live reload css
+gulp.task('css', function () {
+  gulp.src('./app/public/css/*.css')
+    .pipe(connect.reload());
+});
+
+// Compile sass files
+gulp.task('sass', function () {
+  gulp.src('./app/bootstrap-sass/assets/stylesheets/*.scss')
+    .pipe(sass({
+      outputStyle: 'compressed',
+      sourceComments: 'map',
+      includePaths: './app/bootstrap-sass/assets/stylesheets'
+    }).on('error', sass.logError))
+    .pipe(gulp.dest('./app/public/css'));
+});
+
+// Watch files for live reload
 gulp.task('watch', function() {
     gulp.watch('app/dist/js/*.js', ['js']);
-    gulp.watch('app/index.html', ['html']);
+    gulp.watch('app/*.html', ['html']);
     gulp.watch('app/src/**/*.jsx', ['browserify']);
+    gulp.watch('./app/public/css/*.css', ['css']);
+    gulp.watch('./app/bootstrap-sass/assets/stylesheets/*.scss', ['sass']);
 });
 
 gulp.task('default', ['browserify']);

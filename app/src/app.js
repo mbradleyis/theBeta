@@ -1,7 +1,7 @@
 var React = require('react');
-var Test = require('./components/Test.jsx');
+var UserLogin = require('./components/UserLogin.jsx');
 
 React.render(
-  <Test />,
-  document.getElementById('example')
+  <UserLogin />,
+  document.getElementById('userLogin')
 );
