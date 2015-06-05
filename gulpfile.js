@@ -1,3 +1,4 @@
+// HOW TO SASS: http://treyhunner.com/2015/02/creating-a-custom-bootstrap-build/
 var gulp = require('gulp'),
     connect = require('gulp-connect'),
     open = require("gulp-open"),
@@ -7,7 +8,10 @@ var gulp = require('gulp'),
     bower = require('gulp-bower'),
     port = process.env.port || 3031;
 
-var root = './app';
+var root = './app',
+    config = {
+      bootstrapDir: './bower_components/bootstrap-sass',
+    };
 
 var app = {
       dist: root + '/dist',
@@ -68,7 +72,11 @@ gulp.task('css', function () {
   gulp.src(pub.css + '/*.css')
     .pipe(connect.reload());
 });
-
+// Bower task
+gulp.task('bower', function () {
+  return bower()
+    .pipe(gulp.dest(config.bowerDir))
+})
 // Watch files for live reload
 gulp.task('watch', function() {
     gulp.watch(dist.js + '/*.js', ['js']);
