@@ -3,12 +3,32 @@ var gulp = require('gulp'),
     open = require("gulp-open"),
     browserify = require('gulp-browserify'),
     concat = require('gulp-concat'),
-    sass = require('gulp-sass'),
+    sass = require('gulp-ruby-sass'),
+    bower = require('gulp-bower'),
     port = process.env.port || 3031;
+
+var root = './app';
+
+var app = {
+      dist: root + '/dist',
+      pub: root + '/public',
+      src: root + '/src'
+    },
+
+    pub = {
+      css: app.pub + '/css',
+      fonts: app.pub + '/fonts',
+      js: app.pub + '/js'
+    },
+
+    dist = {
+      css: app.dist + '/css',
+      js: app.dist + '/js',
+    };
 
 // browserify and transform JSX
 gulp.task('browserify', function() {
-    gulp.src('./app/src/app.js')
+    gulp.src(app.src + '/app.js')
       .pipe(browserify({transform: 'reactify'}))
       .pipe(gulp.dest('./app/dist/js'));
 });
@@ -18,14 +38,14 @@ gulp.task('open', function(){
   var options = {
     url: 'http://localhost:' + port,
   };
-  gulp.src('app/index.html')
+  gulp.src('./app/index.html')
     .pipe(open('', options));
 });
 
 // live reload server
 gulp.task('connect', function() {
   connect.server({
-    root: 'app',
+    root: root,
     port: port,
     livereload: true
   });
@@ -49,24 +69,12 @@ gulp.task('css', function () {
     .pipe(connect.reload());
 });
 
-// Compile sass files
-gulp.task('sass', function () {
-  gulp.src('./app/bootstrap-sass/assets/stylesheets/*.scss')
-    .pipe(sass({
-      outputStyle: 'compressed',
-      sourceComments: 'map',
-      includePaths: './app/bootstrap-sass/assets/stylesheets'
-    }).on('error', sass.logError))
-    .pipe(gulp.dest('./app/public/css'));
-});
-
 // Watch files for live reload
 gulp.task('watch', function() {
     gulp.watch('app/dist/js/*.js', ['js']);
     gulp.watch('app/*.html', ['html']);
     gulp.watch('app/src/**/*.jsx', ['browserify']);
     gulp.watch('./app/public/css/*.css', ['css']);
-    gulp.watch('./app/bootstrap-sass/assets/stylesheets/*.scss', ['sass']);
 });
 
 gulp.task('default', ['browserify']);

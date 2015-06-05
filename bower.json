@@ -1,0 +1,20 @@
+{
+  "name": "theBeta",
+  "version": "0.0.0",
+  "homepage": "https://github.com/camerow/theBeta",
+  "authors": [
+    "Will <cameron.will@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.4",
+    "fontawesome": "~4.3.0"
+  }
+}
