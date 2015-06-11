@@ -8,7 +8,6 @@ var Timer = React.createClass({
     return (
       <div>
         <Counter time="300"/>
-        <Counter time="1000"/>
         <TimerButtons/>
       </div>
     );
