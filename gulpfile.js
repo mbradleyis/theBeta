@@ -34,6 +34,8 @@ gulp.task('connect', function() {
 gulp.task('js', function () {
   gulp.src('./app/dist/**/*.js')
     .pipe(connect.reload());
+  gulp.src('./app/src/components/js/*.js')
+    .pipe(connect.reload());
 });
 
 // live reload html
@@ -47,6 +49,8 @@ gulp.task('watch', function() {
     gulp.watch('app/dist/js/*.js', ['js']);
     gulp.watch('app/index.html', ['html']);
     gulp.watch('app/src/**/*.jsx', ['browserify']);
+    gulp.watch('app/src/components/js/*.js', ['js']);
+
 });
 
 gulp.task('default', ['browserify']);
