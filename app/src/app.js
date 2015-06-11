@@ -1,7 +1,7 @@
 var React = require('react');
-var Test = require('./components/Test.jsx');
+var Timer = require('./components/Timer.jsx');
 
 React.render(
-  <Test />,
+  <Timer />,
   document.getElementById('example')
 );
