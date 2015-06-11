@@ -1,8 +1,11 @@
 var React = require('react');
 var moment = require('moment');
 
+// Desired time is passed in as a prop from Timer.jsx
+// @todo: start/stop/pause, user input desired time (in min.)
+
 var Counter = React.createClass({
-  toHHMMSS: function (time) {
+  toMMSS: function (time) {
     var sec_num = parseInt(time, 10); // don't forget the second param
     var hours   = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
@@ -36,15 +39,17 @@ var Counter = React.createClass({
   },
 
   render: function() {
-    if (this.state.startTime === 290) {
+    // Stop time at 00:00
+    if (this.state.startTime === 0) {
       var self = this;
       clearInterval(this.intervalTimer);
-      setTimeout(function() {
-        self.timer();
-      }, 3000)
+      // Test that I can stop and start timer.
+      // setTimeout(function() {
+      //   self.timer();
+      // }, 3000)
     }
     return (
-      <p> {this.toHHMMSS(this.state.startTime)} </p>
+      <p> {this.toMMSS(this.state.startTime)} </p>
     );
   }
 
