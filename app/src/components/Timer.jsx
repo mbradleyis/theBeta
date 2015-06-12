@@ -5,21 +5,40 @@ var React = require('react');
 
 var Timer = React.createClass({
   getInitialState: function () {
-    // Eventually user will input minutes.
     return {
-      startTime: parseInt(this.props.time)
+      startTime: 0,
+      isRunning: false,
     }
   },
 
+  handleChange: function(event) {
+    if (event.target.value === "" && !this.state.isRunning) {
+      this.stop();
+      return;
+    } else if (this.state.isRunning) {
+      return;
+    } else {
+      this.setState({
+        startTime: event.target.value
+      });
+    }
+    console.log(event.target.value);
+  },
+
+// Countdown timer functions.
   stop: function() {
     clearInterval(this.intervalTimer);
     this.setState({
-      startTime: this.props.time
+      startTime: 0,
+      isRunning: false
     })
   },
 
   pause: function() {
     clearInterval(this.intervalTimer);
+    this.setState({
+      isRunning: false
+    })
   },
 
   tick: function() {
@@ -39,18 +58,25 @@ var Timer = React.createClass({
 
   timer: function() {
     var self = this;
-    this.tick();
-  },
-
-  componentDidMount: function() {
-    // this.timer();
+    if (!this.state.startTime) {
+      this.setState({
+        // startTime: parseInt(this.refs.timeInput.getDOMNode().value)
+        startTime: parseInt(this.state.startTime)
+      });
+    }
+    // Prevent starting tick multiple times on click.
+    if (!this.state.isRunning) {
+      this.state.isRunning = true;
+      this.tick();
+    }
   },
 
   render: function() {
 
     return (
       <div>
-        <Counter mmss={ticktock.toMMSS} startTime={ticktock.toMMSS(this.state.startTime)}/>
+        <input ref="timeInput" type="text" name="time-input" onChange={this.handleChange}/>
+        <Counter mmss={ticktock.toMMSS} startTime={ticktock.toMMSS(this.state.startTime)} />
         <TimerButtons stop={this.stop} start={this.timer} pause={this.pause}/>
       </div>
     );
